@@ -1,0 +1,48 @@
+<h2>{{titre}}</h2>
+<h3>Formulaire d'ajout</h3>
+<form 
+    ngForm 
+    #assignmentForm
+    (submit)="onSubmit($event); assignmentForm.reset()"
+    class="form"
+>
+
+    <mat-form-field>
+        <input 
+           matInput 
+           placeholder="Nom" 
+           [(ngModel)]="nomDevoir"
+           name="nom"
+        >
+    </mat-form-field>
+ 
+    <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput 
+               [matDatepicker]="picker"
+               [(ngModel)]="dateDeRendu"
+               name="date"
+        >
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix 
+             [for]="picker"></mat-datepicker-toggle
+        >
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+      
+    <button mat-stroked-button [disabled]="(this.nomDevoir === '' || this.dateDeRendu === null)">
+        Ajouter un devoir
+    </button>
+</form>
+
+<ul>
+@for(a of assignments; track a.nom) {
+        @if(a.rendu) {
+            <li appRendu>Le devoir {{a.nom}}, qui est à rendre pour le 
+            {{a.dateDeRendu | date:'dd/MM/YYYY'}} a été rendu</li>
+        } @else {
+            <li appNonRendu>Le devoir {{a.nom}}, qui est à rendre pour le 
+            {{a.dateDeRendu |date:'short'}}, EST ENCORE A RENDRE !!!</li>
+        }
+}
+</ul>
