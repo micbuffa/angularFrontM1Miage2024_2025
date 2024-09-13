@@ -1,48 +1,40 @@
-<h2>{{titre}}</h2>
-<h3>Formulaire d'ajout</h3>
-<form 
-    ngForm 
-    #assignmentForm
-    (submit)="onSubmit($event); assignmentForm.reset()"
-    class="form"
->
-
-    <mat-form-field>
-        <input 
-           matInput 
-           placeholder="Nom" 
-           [(ngModel)]="nomDevoir"
-           name="nom"
-        >
-    </mat-form-field>
- 
-    <mat-form-field>
-        <mat-label>Choose a date</mat-label>
-        <input matInput 
-               [matDatepicker]="picker"
-               [(ngModel)]="dateDeRendu"
-               name="date"
-        >
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix 
-             [for]="picker"></mat-datepicker-toggle
-        >
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-      
-    <button mat-stroked-button [disabled]="(this.nomDevoir === '' || this.dateDeRendu === null)">
-        Ajouter un devoir
+@if(formVisible) {
+    <!-- on affiche le formulaire -->
+    <app-add-assignment></app-add-assignment>
+} @else {
+    <h2>{{titre}}</h2>
+    <!-- Bouton pour afficher le formulaire -->
+    <button mat-flat-button color="accent"
+       (click)="onAddAssignmentBtnClick()"
+    >   Ajouter Assignment
     </button>
-</form>
 
-<ul>
-@for(a of assignments; track a.nom) {
-        @if(a.rendu) {
-            <li appRendu>Le devoir {{a.nom}}, qui est à rendre pour le 
-            {{a.dateDeRendu | date:'dd/MM/YYYY'}} a été rendu</li>
-        } @else {
-            <li appNonRendu>Le devoir {{a.nom}}, qui est à rendre pour le 
-            {{a.dateDeRendu |date:'short'}}, EST ENCORE A RENDRE !!!</li>
-        }
+    <!-- on affiche la liste -->
+    <mat-list>
+        <mat-divider></mat-divider>
+            @for(a of assignments; track a.nom) {
+                <div (click)="assignmentClique(a)">
+                    <h3 mat-sub-header>{{a.dateDeRendu| date:'dd/MM/YYYY'}}</h3>
+                    @if(a.rendu) {
+                        <mat-list-item appRendu>
+                        Le devoir {{a.nom}} a été rendu.
+                        </mat-list-item>    
+                    } @else {
+                        <mat-list-item appNonRendu>
+                            Le devoir {{a.nom}} EST ENCORE A RENDRE !!!
+                        </mat-list-item>
+                    }
+                </div>
+                    <mat-divider></mat-divider>
+            }
+    </mat-list>
+
+    @if(assignmentSelectionne) {
+        <h3>{{assignmentSelectionne.nom}}</h3>
+    }
+
+    <app-assignment-detail 
+        [assignmentTransmis]="assignmentSelectionne"
+    >
+    </app-assignment-detail>
 }
-</ul>

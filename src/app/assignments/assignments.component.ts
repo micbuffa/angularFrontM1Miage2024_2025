@@ -3,48 +3,51 @@ import { CommonModule } from '@angular/common';
 import { RenduDirective } from '../shared/rendu.directive';
 import { NonRenduDirective } from '../shared/non-rendu.directive';
 
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormsModule} from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+
 
 import { Assignment } from './assignment.model';
 
+import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
+import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 @Component({
   selector: 'app-assignments',
   standalone: true,
   imports: [CommonModule, RenduDirective, NonRenduDirective,
-    MatInputModule, MatFormFieldModule, FormsModule, MatButtonModule,
-    MatDatepickerModule,
+    MatButtonModule,
+    MatListModule, MatDividerModule,
+    AssignmentDetailComponent, AddAssignmentComponent
   ],
-  providers: [provideNativeDateAdapter()],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.css'
 })
 export class AssignmentsComponent {
-  titre="Liste des assignments";
+  titre = "Liste des assignments";
   boutonDesactive = false;
-  // Champs du formulaire
-  nomDevoir = '';
-  dateDeRendu = null;
 
-  assignments:Assignment[] = [
+  // Assignment sur lequel on a cliqué
+  assignmentSelectionne!: Assignment;
+
+  // Pour afficher ou non le formulaire ou la liste
+  formVisible = false;
+
+  assignments: Assignment[] = [
     {
-      nom:"Devoir Angular de M.Buffa",
-      dateDeRendu:new Date('2024-10-15'),
-      rendu:false
+      nom: "Devoir Angular de M.Buffa",
+      dateDeRendu: new Date('2024-10-15'),
+      rendu: false
     },
     {
-      nom:"Devoir Big Data de M.Donati",
-      dateDeRendu:new Date('2024-11-25'),
-      rendu:false
+      nom: "Devoir Big Data de M.Donati",
+      dateDeRendu: new Date('2024-11-25'),
+      rendu: false
     },
     {
-      nom:"Fiche personnelle",
-      dateDeRendu:new Date('2024-09-01'),
-      rendu:true
+      nom: "Fiche personnelle",
+      dateDeRendu: new Date('2024-09-01'),
+      rendu: true
     }
   ];
 
@@ -60,30 +63,32 @@ export class AssignmentsComponent {
       this.boutonDesactive = true;
     }, 3000);
     */
+
+    /*
+    setTimeout(() => {
+      this.assignmentSelectionne.nom = 'TOTOTOTOTO';
+    }, 3000);
+  */
   }
 
-  getColor(a:any) {
-    if(a.rendu) return 'green';
+  getColor(a: any) {
+    if (a.rendu) return 'green';
     else return 'red';
   }
 
-  testeClick(a:any) {
-    console.log("click  sur : "+a.nom);
+  testeClick(a: any) {
+    console.log("click  sur : " + a.nom);
   }
 
-  onSubmit(event:any) {
-    if(this.nomDevoir === '' || this.dateDeRendu === null) return;
 
-    console.log("Nom du devoir : "+this.nomDevoir); 
-    console.log("Date de rendu du devoir : "+this.dateDeRendu); 
 
-    const nouvelAssignment = new Assignment();
-    nouvelAssignment.nom = this.nomDevoir;
-    nouvelAssignment.dateDeRendu = this.dateDeRendu;
-    nouvelAssignment.rendu = false;
+  assignmentClique(a: Assignment) {
+    console.log("Assignment cliqué : " + a.nom);
+    this.assignmentSelectionne = a;
+  }
 
-    // on le rajoute au tableau
-    this.assignments.push(nouvelAssignment);
-
+  onAddAssignmentBtnClick() {
+    console.log("Bouton Add Assignment cliqué");
+    this.formVisible = true;
   }
 }
