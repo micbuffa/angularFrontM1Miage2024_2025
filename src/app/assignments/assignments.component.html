@@ -1,6 +1,8 @@
 @if(formVisible) {
+
     <!-- on affiche le formulaire -->
-    <app-add-assignment></app-add-assignment>
+    <app-add-assignment (nouvelAssignment)="addAssignment($event)"></app-add-assignment>
+
 } @else {
     <h2>{{titre}}</h2>
     <!-- Bouton pour afficher le formulaire -->

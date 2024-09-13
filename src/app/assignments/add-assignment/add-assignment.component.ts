@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -19,6 +19,12 @@ import { Assignment } from '../assignment.model';
   providers: [provideNativeDateAdapter()],
 })
 export class AddAssignmentComponent {
+  @Output()
+  // attention, "nouvelAssignment" est le nom de l'événement' qui 
+  // va être écoutée dans le parent, mais aussi le nom de la 
+  // variable qui va servir à transmettre l'objet Assignment dans ce fichier
+  nouvelAssignment = new EventEmitter<Assignment>();
+  
   // Champs du formulaire
   nomDevoir = '';
   dateDeRendu = null;
@@ -30,13 +36,19 @@ export class AddAssignmentComponent {
     console.log("Nom du devoir : " + this.nomDevoir);
     console.log("Date de rendu du devoir : " + this.dateDeRendu);
 
-    const nouvelAssignment = new Assignment();
-    nouvelAssignment.nom = this.nomDevoir;
-    nouvelAssignment.dateDeRendu = this.dateDeRendu;
-    nouvelAssignment.rendu = false;
+    // assignment à envoyer, nouvellement créé
+    const a = new Assignment();
+    a.nom = this.nomDevoir;
+    a.dateDeRendu = this.dateDeRendu;
+    a.rendu = false;
 
     // on le rajoute au tableau
-    //this.assignments.push(nouvelAssignment);
+    //this.assignments.push(a);
+
+    // On envoie l'événement "nouvelAssignment" à notre parent
+    // avec comme donnée attachée l'objet "a": l'assignment 
+    // nouvellement créé
+    this.nouvelAssignment.emit(a);
 
   }
 }

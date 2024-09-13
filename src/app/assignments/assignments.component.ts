@@ -91,4 +91,13 @@ export class AssignmentsComponent {
     console.log("Bouton Add Assignment cliqué");
     this.formVisible = true;
   }
+
+  addAssignment(newAssignment: Assignment) {
+    console.log("Nouvel assignment reçu : " + 
+      newAssignment.nom);
+    this.assignments.push(newAssignment);
+    // et on cache le formulaire
+    // et on affiche la liste
+    this.formVisible = false;
+  }
 }
