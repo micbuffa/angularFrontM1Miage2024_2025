@@ -4,10 +4,13 @@
     <app-add-assignment (nouvelAssignment)="addAssignment($event)"></app-add-assignment>
 
 } @else {
+    <main class="container">
+
     <h2>{{titre}}</h2>
     <!-- Bouton pour afficher le formulaire -->
     <button mat-flat-button color="accent"
        (click)="onAddAssignmentBtnClick()"
+       class="ajouterBtn"
     >   Ajouter Assignment
     </button>
 
@@ -39,4 +42,5 @@
         [assignmentTransmis]="assignmentSelectionne"
     >
     </app-assignment-detail>
+</main>
 }

@@ -12,3 +12,13 @@ table, td, tr {
     color:red
 }
 
+.container {
+    display:flex;
+    flex-direction: column;
+    margin:5px;
+ }
+
+ .ajouterBtn {
+    align-self: flex-end;
+ }
+ 
